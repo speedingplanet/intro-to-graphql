@@ -1,0 +1,156 @@
+type Query {
+	# hello(name: String): String!
+	# GraphQL expects a "resolver" to provide data for this query
+	# hello: String
+	# hello(firstName: String): String
+	hello(firstName: String): String
+	countries: [Country]
+	countryByName: [Country]
+	students(country: String): [Student]
+	studentsWithFilter(filter: StudentOptional!): [Student]!
+	studentById(id: Int!): Student
+	studentsByCountry(country: String!): [Student]
+	courses: [Course]
+	classes: [Class]
+	departments: [Department]
+	instructors: [Instructor]
+	registrations: [Registration]
+	rooms: [Room]
+}
+
+# type Mutation {
+# This is the best option, because it returns the fully created Student object
+# addStudent(student: StudentInput!): Student!
+#
+# Just return the new ID value
+# addStudent(student: StudentInput!): Int
+#
+# addStudent(student: StudentInput!): Boolean
+
+# Thinking of a SQL UPDATE statement: UPDATE {StudentInput} WHERE id = id;
+# updateStudent(id: Int!, student: StudentOptional!): Student
+# deleteStudent(id: Int!): Boolean
+# }
+
+type Class {
+	id: Int!
+	courseId: Int!
+	semester: String!
+	instructorId: Int
+	roomId: Int
+	seats: Int
+	course: Course
+	instructor: Instructor
+	room: Room
+}
+
+type Course {
+	id: Int!
+	courseTitle: String!
+	courseDescription: String
+	credits: Int
+	duration: Int
+	departmentId: Int
+	department: Department
+}
+
+type Department {
+	id: Int!
+	departmentName: String!
+}
+
+type Instructor {
+	id: Int!
+	firstName: String!
+	lastName: String!
+	dateOfBirth: String!
+	email: String
+	phoneNumber: String
+	city: String
+	province: String
+	country: String
+	postalCode: String
+	departmentId: Int
+	department: Department
+	classes: [Class]
+}
+
+type Registration {
+	id: Int!
+	classId: Int!
+	studentId: Int!
+	registrationDate: String
+	registrationStatus: String
+	class: Class
+	course: Course
+	student: Student
+}
+
+type Room {
+	id: Int!
+	roomCapacity: Int
+	building: String
+}
+
+type Studentv1 {
+	id: Int!
+	firstName: String!
+	lastName: String!
+	dateOfBirth: String!
+	email: String
+	phoneNumber: String
+	city: String
+	province: String
+	country: String
+	postalCode: String
+}
+
+type Student {
+	id: Int!
+	firstName: String!
+	lastName: String!
+	active: Boolean!
+	address: Address!
+}
+
+type Address {
+	street: String
+	city: String
+	province: String
+	country: String
+	postalCode: String
+}
+
+type Country {
+	pop2026: Int
+	pop2050: Int
+	country: String!
+	area: Float
+	landAreaKm: Float
+	cca2: String
+	cca3: String
+	density: Float
+	growthRate: Float
+	worldPercentage: Float
+	rank: Int
+}
+
+input StudentOptional {
+	firstName: String
+	lastName: String
+	dateOfBirth: String
+	city: String
+	province: String
+	country: String
+	postalCode: String
+}
+
+input StudentInput {
+	firstName: String!
+	lastName: String!
+	dateOfBirth: String!
+	city: String
+	province: String
+	country: String
+	postalCode: String
+}
