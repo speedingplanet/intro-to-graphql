@@ -1,4 +1,6 @@
 import allData from '../data/all-data.json' with { type: 'json' };
+import { resolvers as labResolvers } from '../labs/lab-resolvers.js';
+import { mergeResolvers } from '@graphql-tools/merge';
 
 let {
 	countries,
@@ -13,7 +15,7 @@ let {
 	},
 } = allData;
 
-export const resolvers = {
+const mainResolvers = {
 	Query: {
 		// hello: (parent, { name }: { name: string }) => `Hello ${name ?? 'everyone'}!`,
 
@@ -180,3 +182,5 @@ export const resolvers = {
 		*/
 	// },
 };
+
+export const resolvers = mergeResolvers([mainResolvers, labResolvers]);
