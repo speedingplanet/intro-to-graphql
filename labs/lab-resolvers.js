@@ -1,6 +1,7 @@
 import allData from '../data/all-data.json' with { type: 'json' };
 
 let {
+	// eslint-disable-next-line no-unused-vars
 	zippay: { payments, users },
 } = allData;
 
