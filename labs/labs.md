@@ -45,3 +45,25 @@ That is, a User should display as
 ```
 
 You'll need to update lab-schema.graphql with the new field on the User resolver. And then you'll need to implement the resolver in lab-resolvers.js
+
+## Filtering
+
+Let's filter on the payments collection, specifically on the `amount` property
+
+Filter properties
+
+greaterThan
+greaterThanOrEqualTo
+lessThan
+lessThanOrEqualTo
+equalTo
+
+equalTo overrides everything else
+greaterThan or lessThan standalone
+Or in combination, e.g. greaterThan: 10, lessThan: 20
+
+We need an input type to express the possible values for filtering.
+
+We need a `filterPaymentsByAmount` query, that takes the input type as an argument.
+
+We need to implement a resolver for `filterPaymentsByAmount`.
