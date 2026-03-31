@@ -9,7 +9,8 @@ type Query {
 	countries: [Country]
 	countryByName(name: String): [Country]
 	students(country: String): [Student]
-	studentsWithFilter(filter: StudentOptional!): [Student]!
+	filterStudents(filter: StudentFilterCriteria!): [Student]!
+	filterStudentsNested(filter: StudentFilterCriteriaNested!): [Student]!
 	studentById(id: Int!): Student
 	studentsByCountry(country: String!): [Student]
 	courses: [Course]
@@ -138,10 +139,27 @@ type Country {
 	rank: Int
 }
 
-input StudentOptional {
+input StudentFilterCriteria {
 	firstName: String
 	lastName: String
 	dateOfBirth: String
+	active: Boolean
+	city: String
+	province: String
+	country: String
+	postalCode: String
+}
+
+input StudentFilterCriteriaNested {
+	firstName: String
+	lastName: String
+	dateOfBirth: String
+	active: Boolean
+	address: AddressInput
+}
+
+input AddressInput {
+	street: String
 	city: String
 	province: String
 	country: String

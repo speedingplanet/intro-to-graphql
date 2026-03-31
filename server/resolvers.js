@@ -1,3 +1,4 @@
+import { filter, isEmpty } from 'lodash-es';
 import allData from '../data/all-data.json' with { type: 'json' };
 import { resolvers as labResolvers } from '../labs/lab-resolvers.js';
 import { mergeResolvers } from '@graphql-tools/merge';
@@ -91,17 +92,31 @@ const mainResolvers = {
 			// Have to return null, not undefined
 			return students.filter((s) => s.address.country === country) ?? null;
 		},
-		/*
-		studentsWithFilter(parent, args) {
-			// Shortcut, no need to do filtering work if args is not present or empty
-			if (!args || _.isEmpty(args)) return students;
 
-			let filteredStudents: Student[] = [...students];
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-			filteredStudents = _.filter(students, args.filter) as Student[];
+		filterStudents(parent, args) {
+			// Shortcut, no need to do filtering work if args is not present or empty
+			if (!args || isEmpty(args)) return students;
+
+			let criteria = { ...args.filter };
+			criteria.address = {};
+			for (let prop in criteria) {
+				if (['city', 'province', 'country', 'postalCode'].includes(prop)) {
+					console.log(prop, criteria[prop]);
+					criteria.address[prop] = criteria[prop];
+					delete criteria[prop];
+				}
+			}
+
+			let filteredStudents = [...students];
+			filteredStudents = filter(students, criteria);
 			return filteredStudents;
 		},
 
+		filterStudentsNested(parent, args) {
+			return filter(students, args.filter);
+		},
+
+		/*
 		studentsWithFields(parent, args) {
 			// studentsWithFields(province: 'CA', country: 'US')
 			// Shortcut, no need to do filtering work if args is not present or empty
