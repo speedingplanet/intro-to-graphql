@@ -17,6 +17,10 @@ let {
 
 const mainResolvers = {
 	Query: {
+		greetings() {
+			return 'Hello and well met!';
+		},
+
 		// hello: (parent, { name }: { name: string }) => `Hello ${name ?? 'everyone'}!`,
 
 		// All of these are equivalent (assignment, declaration, arrow)
@@ -32,13 +36,26 @@ const mainResolvers = {
 			return countries;
 		},
 
+		/*
+		 * For any resolver, the signature is
+		 * resolver(parent, arguments, context, info)
+		 *
+		 * parent: The previous resolver in the resolver chain
+		 * arguments: All GraphQL arguments provided to this resolver
+		 * context: Shared across all resolvers for this operation; use to share state
+		 * info: Metadata about the operation's execution state (field name, path to field, etc.)
+		 * info also allows reading/setting/overriding cache control hints.
+		 * See:https://www.apollographql.com/docs/apollo-server/performance/caching#in-your-resolvers-dynamic
+		 *
+		 */
 		countryByName(parent, { name }) {
 			if (!name) return countries;
 
-			return countries.find((c) => c.name === name);
+			return [countries.find((c) => c.country === name)];
 		},
 
 		students(parent, { country }) {
+			// students(parent, params) {
 			if (!country) return students;
 
 			return students.filter((s) => s.address.country === country);
@@ -130,7 +147,9 @@ const mainResolvers = {
 			return classes.find((c) => c.id === parent.classId) || null;
 		},
 		student(parent) {
-			return students.find((s) => s.id === parent.studentId) || null;
+			// return students.find((s) => s.id === parent.studentId) || null;
+			let { firstName, lastName } = students.find((s) => s.id === parent.studentId) || null;
+			return `${firstName} ${lastName}`;
 		},
 		course(parent) {
 			let foundClass = classes.find((c) => c.id === parent.classId);

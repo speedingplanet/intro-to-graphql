@@ -3,9 +3,11 @@ type Query {
 	# GraphQL expects a "resolver" to provide data for this query
 	# hello: String
 	# hello(firstName: String): String
+	# nameOfQuery(arguments:types): returnType
+	greetings: String
 	hello(firstName: String): String
 	countries: [Country]
-	countryByName: [Country]
+	countryByName(name: String): [Country]
 	students(country: String): [Student]
 	studentsWithFilter(filter: StudentOptional!): [Student]!
 	studentById(id: Int!): Student
@@ -83,7 +85,8 @@ type Registration {
 	registrationStatus: String
 	class: Class
 	course: Course
-	student: Student
+	# student: Student
+	student: String
 }
 
 type Room {
