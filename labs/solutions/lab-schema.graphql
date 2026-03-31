@@ -9,6 +9,7 @@ type Query {
 	#            if it has any values (empty array allowed)
 	userEmails: [String!]!
 	users: [User]
+	payments: [Payment]
 }
 
 type Location {
@@ -25,4 +26,17 @@ type User {
 	email: String
 	userId: String
 	location: Location
+}
+
+type Payment {
+	id: Int
+	sender: String
+	senderDetails: User
+	recipient: String
+	datePaid: String
+	amount: Float
+	localeAmount: String
+	reason: String
+	visibility: String
+	settled: Boolean
 }
