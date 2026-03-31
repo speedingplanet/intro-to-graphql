@@ -1,0 +1,28 @@
+type Query {
+	labHello: String
+
+	# String, Int, Float, Boolean, ID
+	# [String] array of Strings, optionally
+	# [String!] array that requires strings (could still be empty)
+	#           and could be null!
+	# [String!]! must return an array (no nulls), must have strings
+	#            if it has any values (empty array allowed)
+	userEmails: [String!]!
+	users: [User]
+}
+
+type Location {
+	city: String
+	province: String
+	country: String
+	postalCode: String
+}
+
+type User {
+	id: Int!
+	firstName: String
+	lastName: String
+	email: String
+	userId: String
+	location: Location
+}

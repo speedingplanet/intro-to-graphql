@@ -1,0 +1,11 @@
+enum CacheControlScope {
+	PUBLIC # Default
+	PRIVATE # Target field's value is specific to a single user
+}
+
+# Use at field or Type level; field overrides type if there's a conflict
+directive @cacheControl(
+	maxAge: Int # How long is the value valid, in seconds, default 0
+	scope: CacheControlScope
+	inheritMaxAge: Boolean # Inherit maxAge from the parent field, default false
+) on FIELD_DEFINITION | OBJECT | INTERFACE | UNION
