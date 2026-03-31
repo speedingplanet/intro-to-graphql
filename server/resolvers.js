@@ -29,7 +29,7 @@ const mainResolvers = {
 		// hello: () => 'Hi!',
 		hello(parent, args) {
 			let firstName = args.firstName ?? 'everyone';
-			return `Hi ${firstName}!`;
+			return `Hi ${firstName} ${args.lastName ?? ''}!`;
 		},
 
 		countries() {
@@ -48,7 +48,9 @@ const mainResolvers = {
 		 * See:https://www.apollographql.com/docs/apollo-server/performance/caching#in-your-resolvers-dynamic
 		 *
 		 */
-		countryByName(parent, { name }) {
+		countryByName(parent, { name }, context) {
+			context.operationName = 'countryByName';
+			context.accessCount = 1;
 			if (!name) return countries;
 
 			return [countries.find((c) => c.country === name)];
@@ -113,6 +115,27 @@ const mainResolvers = {
 			return students.find((s) => s.id === id) ?? null;
 		},
 		*/
+	},
+
+	Country: {
+		pop2026(parent, args, context) {
+			console.log(`pop2026 resolver, context is ${context.operationName}`);
+			context.accessCount++;
+			console.log(context);
+			return parent.pop2026;
+		},
+		country(parent, args, context) {
+			console.log(`country resolver, context is ${context.operationName}`);
+			context.accessCount++;
+			console.log(context);
+			return parent.country;
+		},
+		rank(parent, args, context) {
+			console.log(`rank resolver, context is ${context.operationName}`);
+			context.accessCount++;
+			console.log(context);
+			return parent.rank;
+		},
 	},
 
 	Course: {
